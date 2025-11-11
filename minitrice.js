@@ -16,11 +16,19 @@ const getReadlineInterface = () => {
   });
 };
 
+const handleSyntaxError = (line) => {
+  console.log("Erreur de syntax pour le calcul : ", line);
+  process.exit(1);
+};
+
 const getSplittedLine = (line) => {
   for(const operator in OPERATORS) {
     if(!line.includes(operator)) continue;
     
     const [a, b] = line.split(operator);
+
+    if(a.trim().length === 0 || isNaN(a)) handleSyntaxError(line);
+    if(b.trim().length === 0 || isNaN(b)) handleSyntaxError(line);
 
     return {
       operator: operator,
@@ -28,6 +36,8 @@ const getSplittedLine = (line) => {
       b: +b,
     };
   }
+
+  handleSyntaxError(line);
 };
 
 const computeAndShowResult = (line) => {
