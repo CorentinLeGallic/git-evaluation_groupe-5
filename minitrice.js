@@ -9,6 +9,13 @@ const OPERATORS = {
   "/": (a, b) => a / b,
 };
 
+const getReadlineInterface = () => {
+  return readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+};
+
 const getSplittedLine = (line) => {
   for(const operator in OPERATORS) {
     if(!line.includes(operator)) continue;
@@ -23,22 +30,22 @@ const getSplittedLine = (line) => {
   }
 };
 
-const runInteractiveMode = async () => {
-  const readlineInterface = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
+const computeAndShowResult = (line) => {
+  const { operator, a, b } = getSplittedLine(line);
+
+  const computeFunction = OPERATORS[operator];
+  const result = computeFunction(a, b);
+
+  console.log(result);
+};
+
+const runInteractiveMode = () => {
+  const readlineInterface = getReadlineInterface();
 
   readlineInterface.prompt();
 
   readlineInterface.on("line", (line) => {
-    const { operator, a, b } = getSplittedLine(line);
-
-    const computeFunction = OPERATORS[operator];
-    const result = computeFunction(a, b);
-
-    console.log(result);
-  
+    computeAndShowResult(line);
     readlineInterface.prompt();
   });
 
@@ -47,4 +54,19 @@ const runInteractiveMode = async () => {
   });
 };
 
-runInteractiveMode();
+const runStdinMode = () => {
+  const readlineInterface = getReadlineInterface();
+
+  readlineInterface.on("line", (line) => {
+    computeAndShowResult(line);
+  });
+};
+
+if(process.stdin.isTTY) {
+  // Interactive mode
+  runInteractiveMode();
+}
+ else {
+  // STDIN
+  runStdinMode();
+}
