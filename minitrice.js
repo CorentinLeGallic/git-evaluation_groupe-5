@@ -44,13 +44,21 @@ const getSplittedLine = (line) => {
   handleError("Erreur de syntax pour le calcul : " + line);
 };
 
+const formatResult = (value) => {
+  const stringifiedValue = value.toString();
+  const dotIndex = stringifiedValue.indexOf(".");
+
+  if(dotIndex === -1 || stringifiedValue.length - dotIndex - 1 <= 2) return value;
+  return +value.toFixed(2);
+};
+
 const computeAndShowResult = (line) => {
   const { operator, a, b } = getSplittedLine(line);
 
   const computeFunction = OPERATORS[operator];
   const result = computeFunction(a, b);
 
-  console.log(result);
+  console.log(formatResult(result));
 };
 
 const runInteractiveMode = () => {
