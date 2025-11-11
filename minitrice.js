@@ -31,8 +31,8 @@ const getSplittedLine = (line) => {
     
     const [a, b] = line.split(operator);
 
-    if(a.trim().length === 0 || isNaN(a)) handleError("Erreur de syntax pour le calcul : ", line);
-    if(b.trim().length === 0 || isNaN(b)) handleError("Erreur de syntax pour le calcul : ", line);
+    if(a.trim().length === 0 || isNaN(a) || +a < 0) handleError("Erreur de syntax pour le calcul : " + line);
+    if(b.trim().length === 0 || isNaN(b) || +b < 0) handleError("Erreur de syntax pour le calcul : " + line);
 
     return {
       operator: operator,
@@ -41,7 +41,7 @@ const getSplittedLine = (line) => {
     };
   }
 
-  handleSyntaxError(line);
+  handleError("Erreur de syntax pour le calcul : " + line);
 };
 
 const computeAndShowResult = (line) => {
