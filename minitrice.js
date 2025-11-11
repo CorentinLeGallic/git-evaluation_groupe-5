@@ -6,7 +6,11 @@ const OPERATORS = {
   "+": (a, b) => a + b,
   "-": (a, b) => a - b,
   "*": (a, b) => a * b,
-  "/": (a, b) => a / b,
+  "/": (a, b) => {
+    if(b === 0) handleError("Division par zéro");
+
+    return a / b;
+  },
 };
 
 const getReadlineInterface = () => {
@@ -16,8 +20,8 @@ const getReadlineInterface = () => {
   });
 };
 
-const handleSyntaxError = (line) => {
-  console.log("Erreur de syntax pour le calcul : ", line);
+const handleError = (errorMessage) => {
+  console.log(errorMessage);
   process.exit(1);
 };
 
@@ -27,8 +31,8 @@ const getSplittedLine = (line) => {
     
     const [a, b] = line.split(operator);
 
-    if(a.trim().length === 0 || isNaN(a)) handleSyntaxError(line);
-    if(b.trim().length === 0 || isNaN(b)) handleSyntaxError(line);
+    if(a.trim().length === 0 || isNaN(a)) handleError("Erreur de syntax pour le calcul : ", line);
+    if(b.trim().length === 0 || isNaN(b)) handleError("Erreur de syntax pour le calcul : ", line);
 
     return {
       operator: operator,
