@@ -1,0 +1,1 @@
+Erreur de syntax pour le calcul : *0
